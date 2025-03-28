@@ -56,7 +56,7 @@ public class SetupDependencies
         }
         else
         {
-            // services.AddHttpClient<IQuickbaseApi, JsonQuickbaseApi>();
+            services.AddHttpClient<IQuickbaseApi, JsonQuickbaseApi>();
         }
     }
 }

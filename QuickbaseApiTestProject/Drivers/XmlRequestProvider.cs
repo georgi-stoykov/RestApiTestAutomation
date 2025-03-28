@@ -25,4 +25,27 @@ public class XmlRequestProvider
         modifyRequest?.Invoke(request);
         return request;
     }
+    
+    public AddRecordRequestDto AddRecordRequest(Action<AddRecordRequestDto>? modifyRequest = null)
+    {
+        var request =  new AddRecordRequestDto
+        {
+            UserData = "mydata",
+            Ticket = testSettings.Ticket,
+            AppToken = testSettings.AppToken,
+            Fields = new Dictionary<string, string>
+            {
+                ["firstname"] = "georgi",
+                ["lastname"] = "Test6",
+                ["age"] = "25",
+                ["date_of_birth"] = "06-03-1980",
+                ["website_url"] = "https://www.linkedin.com/feed/",
+                ["email_address"] = "georgi4@georgistoykov.com",
+                ["mobile"] = "123123123"
+            }
+        };
+        
+        modifyRequest?.Invoke(request);
+        return request;
+    }
 }

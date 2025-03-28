@@ -18,5 +18,7 @@ public class TestSettingsConfig
     public string Password { get; set; }
     
     public string Ticket { get; set; }
+    
+    public string AppToken { get; set; }
 }
 

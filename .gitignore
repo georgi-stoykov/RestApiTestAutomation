@@ -6,3 +6,4 @@ obj/
 /packages/
 QuickbaseApiTestProject/TestResult.xml
 *.sln.DotSetting*
+QuickbaseApiTestProject/appsettings.json

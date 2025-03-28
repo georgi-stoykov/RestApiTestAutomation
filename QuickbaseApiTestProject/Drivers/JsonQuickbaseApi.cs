@@ -10,7 +10,7 @@ using QuickbaseApiTestProject.Drivers.Interfaces;
 
 namespace QuickbaseApiTestProject.Drivers;
 
-public class JsonQuickbaseApi 
+public class JsonQuickbaseApi  : IQuickbaseApi
 {
     private readonly HttpClient _httpClient;
     private readonly ApiSettingsConfig _config;
@@ -23,66 +23,18 @@ public class JsonQuickbaseApi
         _httpClient.BaseAddress = new Uri(_config!.BaseApiUrl);
     }
 
-    public async Task<string> AuthenticateAsync(AuthenticateRequestDto body)
+    public Task<BaseResponseDto> AuthenticateAsync(AuthenticateRequestDto body)
     {
-        string endpoint = string.Format(_config.Endpoints.Authenticate, body);
-        
-        // Create JSON request
-        var authRequest = new
-        {
-            UserToken = body // Assuming parameter is userToken for REST API
-        };
-        
-        var json = JsonSerializer.Serialize(authRequest);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        
-        var response = await _httpClient.PostAsync(endpoint, content);
-        response.EnsureSuccessStatusCode();
-        
-        string jsonResponse = await response.Content.ReadAsStringAsync();
-        var authResponse = JsonSerializer.Deserialize<BaseResponseDto>(jsonResponse);
-        
-        _authToken = authResponse.Ticket;
-        
-        // Set the auth token for future requests
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("QB-USER-TOKEN", _authToken);
-        
-        return _authToken;
+        throw new NotImplementedException();
     }
 
-    public async Task<string> AddRecordAsync(string tableId, AddRecordRequestDto recordData)
+    public Task<BaseResponseDto> AddRecordAsync(string tableId, AddRecordRequestDto recordRequestData)
     {
-        var addRequest = new
-        {
-            to = tableId,
-            data = new[] { recordData }
-        };
-        
-        var json = JsonSerializer.Serialize(addRequest);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        
-        var response = await _httpClient.PostAsync(_config.Endpoints.AddRecord, content);
-        response.EnsureSuccessStatusCode();
-        
-        string jsonResponse = await response.Content.ReadAsStringAsync();
-        var addResponse = JsonSerializer.Deserialize<BaseResponseDto>(jsonResponse);
-        
-        // return addResponse.Metadata.CreatedRecordIds[0];
-        return "";
+        throw new NotImplementedException();
     }
 
-    public async Task<bool> DeleteRecordAsync(string tableId, string recordId)
+    public Task<bool> DeleteRecordAsync(string tableId, string recordId)
     {
-        var deleteRequest = new
-        {
-            from = tableId,
-            where = $"{{3.EX.'{recordId}'}}" // Assuming record ID field is field 3
-        };
-        
-        var json = JsonSerializer.Serialize(deleteRequest);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        
-        var response = await _httpClient.PostAsync(_config.Endpoints.DeleteRecord, content);
-        return response.IsSuccessStatusCode;
+        throw new NotImplementedException();
     }
 }

@@ -25,6 +25,9 @@ public class Hooks : IDisposable
     {
         var request = requestProvider.AuthenticateRequest();
         var response = await quickbaseApi.AuthenticateAsync(request);
+        
+        var request1 = requestProvider.AddRecordRequest();
+        var response1 = await quickbaseApi.AddRecordAsync("buzhrg7mn", request1);
     }
 
     [OneTimeTearDown]
