@@ -10,27 +10,27 @@ using QuickbaseApiTestProject.Drivers.Interfaces;
 
 namespace QuickbaseApiTestProject.Drivers;
 
-public class JsonQuickBaseApi : IQuickBaseApi
+public class JsonQuickbaseApi : IQuickbaseApi
 {
     private readonly HttpClient _httpClient;
     private readonly ApiSettingsConfig _config;
     private string _authToken; // For storing JWT token
 
-    public JsonQuickBaseApi(HttpClient httpClient, IOptionsMonitor<ApiSettingsConfig> settingsConfig)
+    public JsonQuickbaseApi(HttpClient httpClient, IOptionsMonitor<ApiSettingsConfig> settingsConfig)
     {
         _httpClient = httpClient;
         _config = settingsConfig.Get(ApiSettingsConfig.JsonApiConfig);
         _httpClient.BaseAddress = new Uri(_config!.BaseApiUrl);
     }
 
-    public async Task<string> AuthenticateAsync(AuthenticateRequestDto parameter)
+    public async Task<string> AuthenticateAsync(AuthenticateRequestDto body)
     {
-        string endpoint = string.Format(_config.Endpoints.Authenticate, parameter);
+        string endpoint = string.Format(_config.Endpoints.Authenticate, body);
         
         // Create JSON request
         var authRequest = new
         {
-            UserToken = parameter // Assuming parameter is userToken for REST API
+            UserToken = body // Assuming parameter is userToken for REST API
         };
         
         var json = JsonSerializer.Serialize(authRequest);

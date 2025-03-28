@@ -2,51 +2,46 @@
 using Microsoft.Extensions.Options;
 using QuickbaseApiTestProject.Drivers.Interfaces;
 using QuickbaseApiTestProject.TestUtilities;
+using QuickbaseApiTestProject.TestUtilities.Constants;
 
 namespace QuickbaseApiTestProject.Drivers;
 
-public class XmlQuickBaseApi : IQuickBaseApi
+public class XmlQuickbaseApi : IQuickbaseApi
 {
-    private readonly HttpClient _httpClient;
-    private readonly ApiSettingsConfig _config;
-    private string _ticket; // For storing authentication ticket
+    private readonly HttpClient httpClient;
+    private readonly ApiSettingsConfig config;
+    private string ticket; // For storing authentication ticket
 
-    public XmlQuickBaseApi(HttpClient httpClient, IOptionsMonitor<ApiSettingsConfig> settingsConfig)
+    public XmlQuickbaseApi(HttpClient httpClient, IOptionsMonitor<ApiSettingsConfig> settingsConfig)
     {
-        _httpClient = httpClient;
-        _config = settingsConfig.Get(ApiSettingsConfig.XmlApiConfig);
-        _httpClient.BaseAddress = new Uri(_config.BaseApiUrl);
+        this.httpClient = httpClient;
+        config = settingsConfig.Get(ApiSettingsConfig.XmlApiConfig);
+        this.httpClient.BaseAddress = new Uri(config.BaseApiUrl);
     }
 
-    public async Task<string> AuthenticateAsync(AuthenticateRequestDto parameter)
+    public async Task<string> AuthenticateAsync(AuthenticateRequestDto body)
     {
-        string endpoint = string.Format(_config.Endpoints.Authenticate, parameter);
+        string endpoint = string.Format(config.Endpoints.Authenticate, body);
         
-        // // Create XML request
-        // var authRequest = new AuthenticateRequestDto
-        // {
-        //     Username = parameter, // Assuming parameter is username
-        //     Password = "your-password" // In a real app, this would come from secure storage
-        // };
-        
-        string xmlRequest = SerializeToXml(parameter);
+        string xmlRequest = SerializeToXml(body);
         var content = new StringContent(xmlRequest, Encoding.UTF8, "application/xml");
+        content.Headers.Add("QUICKBASE-ACTION", nameof(ApiActionsEnum.API_Authenticate));
         
-        var response = await _httpClient.PostAsync(endpoint, content);
+        var response = await httpClient.PostAsync(endpoint, content);
         response.EnsureSuccessStatusCode();
         
         string xmlResponse = await response.Content.ReadAsStringAsync();
         
         // Parse XML response to extract ticket
         var authResponse = DeserializeFromXml<BaseResponseDto>(xmlResponse);
-        _ticket = authResponse.Ticket;
+        ticket = authResponse.Ticket;
         
-        return _ticket;
+        return ticket;
     }
 
     public async Task<string> AddRecordAsync(string tableId, AddRecordRequestDto recordData)
     {
-        string endpoint = string.Format(_config.Endpoints.AddRecord, tableId);
+        string endpoint = string.Format(config.Endpoints.AddRecord, tableId);
         
         // // Create XML request with ticket and record data
         // var addRequest = new XmlAddRecordRequest
@@ -72,7 +67,7 @@ public class XmlQuickBaseApi : IQuickBaseApi
     public async Task<bool> DeleteRecordAsync(string tableId, string recordId)
     {
         // Implementation for XML delete request
-        string endpoint = _config.Endpoints.DeleteRecord;
+        string endpoint = config.Endpoints.DeleteRecord;
         
         // var deleteRequest = new XmlDeleteRecordRequest
         // {

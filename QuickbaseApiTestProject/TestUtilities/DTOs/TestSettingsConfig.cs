@@ -12,5 +12,11 @@ public class TestSettingsConfig
 {
     [Required]
     public string ApiMode { get; set; }
+    
+    public string Username { get; set; }
+    
+    public string Password { get; set; }
+    
+    public string Ticket { get; set; }
 }
 

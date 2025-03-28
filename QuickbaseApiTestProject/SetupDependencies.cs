@@ -8,6 +8,7 @@ using QuickbaseApiTestProject.Drivers.Interfaces;
 using QuickbaseApiTestProject.TestUtilities;
 using Microsoft.Extensions.Http;
 using QuickbaseApiTestProject.TestUtilities.Constants;
+using TestContext = NUnit.Framework.TestContext;
 
 namespace QuickbaseApiTestProject;
 
@@ -25,8 +26,7 @@ public class SetupDependencies
         
         // 2. Bind the configuration settings
         services.AddOptions<TestSettingsConfig>()
-            .Bind(configuration.GetSection(nameof(TestSettingsConfig.ApiMode)))
-            .Validate(x => x.ApiMode is ApiMode.XML or ApiMode.JSON);
+            .Bind(configuration.GetSection(nameof(TestSettingsConfig)));
 
         services.AddOptions<ApiSettingsConfig>(nameof(ApiSettingsConfig.XmlApiConfig))
             .Bind(configuration.GetSection(nameof(ApiSettingsConfig.XmlApiConfig)));
@@ -38,8 +38,8 @@ public class SetupDependencies
         var viewSettings = configuration.GetDebugView();
 #endif
 
-        // 3. Register our API config provider
-        services.AddSingleton<IDataDriver, DataDriver>();
+        // 3. Register our API config provider  
+        services.AddSingleton<XmlRequestProvider>();
         
         // 4. Register HTTP client using the config provider`
         RegisterQuickBaseApi(services, configuration);
@@ -50,16 +50,17 @@ public class SetupDependencies
     private static void RegisterQuickBaseApi(IServiceCollection services, IConfiguration configuration)
     {
         // Get API mode from configuration
-        string? apiMode = configuration.GetValue<string>(nameof(TestSettingsConfig.ApiMode));
+        var apiMode =
+            configuration.GetSection(nameof(TestSettingsConfig))[nameof(TestSettingsConfig.ApiMode)];
     
         // Register the appropriate implementation based on ApiMode
         if (string.Equals(apiMode, ApiMode.XML, StringComparison.OrdinalIgnoreCase))
         {
-            services.AddHttpClient<IQuickBaseApi, XmlQuickBaseApi>();
+            services.AddHttpClient<IQuickbaseApi, XmlQuickbaseApi>();
         }
         else
         {
-            services.AddHttpClient<IQuickBaseApi, JsonQuickBaseApi>();
+            services.AddHttpClient<IQuickbaseApi, JsonQuickbaseApi>();
         }
         
         // // Register the appropriate implementation based on ApiMode

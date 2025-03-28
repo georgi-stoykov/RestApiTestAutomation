@@ -1,7 +1,8 @@
+/.idea
+/_ReSharper.Caches/
+riderModule.iml
 bin/
 obj/
 /packages/
-riderModule.iml
-/_ReSharper.Caches/
 QuickbaseApiTestProject/TestResult.xml
-/.idea
+/QuickbaseApiTestProject/appsettings.json

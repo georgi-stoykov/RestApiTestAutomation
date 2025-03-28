@@ -1,8 +1,8 @@
 ﻿namespace QuickbaseApiTestProject.Drivers.Interfaces;
 
-public interface IQuickBaseApi
+public interface IQuickbaseApi
 {
-    Task<string> AuthenticateAsync(AuthenticateRequestDto parameter);
+    Task<string> AuthenticateAsync(AuthenticateRequestDto body);
     Task<string> AddRecordAsync(string tableId, AddRecordRequestDto recordRequestData);
     Task<bool> DeleteRecordAsync(string tableId, string recordId);
 }

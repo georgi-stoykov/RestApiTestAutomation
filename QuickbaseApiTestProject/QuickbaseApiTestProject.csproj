@@ -25,12 +25,17 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="TestData\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="appsettings.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="TestData\AddRecord\AddRecord_FieldsNamesAndIDs.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="TestData\AddRecord\AddRecord_WithFieldIDs.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="TestData\AddRecord\AddRecord_WithFieldNames.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

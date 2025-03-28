@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using QuickbaseApiTestProject.Drivers;
 using QuickbaseApiTestProject.Drivers.Interfaces;
 
 namespace QuickbaseApiTestProject;
@@ -7,23 +8,23 @@ namespace QuickbaseApiTestProject;
 public class Hooks : IDisposable
 {
     private readonly IServiceProvider serviceProvider;
-    private IDataDriver dataDriver;
-    private IQuickBaseApi quickBaseApi;
+    private XmlRequestProvider requestProvider;
+    private IQuickbaseApi quickbaseApi;
     private bool disposed = false;
 
     public Hooks()
     {
         // Resolve the dependencies
         serviceProvider = SetupDependencies.ConfigureServices();
-        dataDriver = serviceProvider.GetRequiredService<IDataDriver>();
-        quickBaseApi = serviceProvider.GetRequiredService<IQuickBaseApi>();
+        requestProvider = serviceProvider.GetRequiredService<XmlRequestProvider>();
+        quickbaseApi = serviceProvider.GetRequiredService<IQuickbaseApi>();
     }
 
     [OneTimeSetUp]
     public async Task Setup()
     {
-        // var request = dataDriver.AuthenticateRequest();
-        // var response = await quickBaseApi.AuthenticateAsync(request);
+        var request = requestProvider.AuthenticateRequest();
+        var response = await quickbaseApi.AuthenticateAsync(request);
     }
 
     [OneTimeTearDown]
