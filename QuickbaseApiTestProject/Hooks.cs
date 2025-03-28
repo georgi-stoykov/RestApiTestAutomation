@@ -22,8 +22,8 @@ public class Hooks : IDisposable
     [OneTimeSetUp]
     public async Task Setup()
     {
-        var request = dataDriver.AuthenticateRequest();
-        var response = await quickBaseApi.AuthenticateAsync(string.Empty);
+        // var request = dataDriver.AuthenticateRequest();
+        // var response = await quickBaseApi.AuthenticateAsync(request);
     }
 
     [OneTimeTearDown]

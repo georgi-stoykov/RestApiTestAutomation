@@ -13,17 +13,17 @@ namespace QuickbaseApiTestProject.Drivers;
 public class JsonQuickBaseApi : IQuickBaseApi
 {
     private readonly HttpClient _httpClient;
-    private readonly IApiConfigProvider _config;
+    private readonly ApiSettingsConfig _config;
     private string _authToken; // For storing JWT token
 
-    public JsonQuickBaseApi(HttpClient httpClient, IApiConfigProvider config)
+    public JsonQuickBaseApi(HttpClient httpClient, IOptionsMonitor<ApiSettingsConfig> settingsConfig)
     {
         _httpClient = httpClient;
-        _config = config;
-        // _httpClient.BaseAddress = new Uri(_config!.BaseApiUrl);
+        _config = settingsConfig.Get(ApiSettingsConfig.JsonApiConfig);
+        _httpClient.BaseAddress = new Uri(_config!.BaseApiUrl);
     }
 
-    public async Task<string> AuthenticateAsync(string parameter)
+    public async Task<string> AuthenticateAsync(AuthenticateRequestDto parameter)
     {
         string endpoint = string.Format(_config.Endpoints.Authenticate, parameter);
         
@@ -50,7 +50,7 @@ public class JsonQuickBaseApi : IQuickBaseApi
         return _authToken;
     }
 
-    public async Task<string> AddRecordAsync(string tableId, object recordData)
+    public async Task<string> AddRecordAsync(string tableId, AddRecordRequestDto recordData)
     {
         var addRequest = new
         {

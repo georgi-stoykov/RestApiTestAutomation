@@ -8,27 +8,28 @@ namespace QuickbaseApiTestProject.Drivers;
 public class XmlQuickBaseApi : IQuickBaseApi
 {
     private readonly HttpClient _httpClient;
-    private readonly IApiConfigProvider _config;
+    private readonly ApiSettingsConfig _config;
     private string _ticket; // For storing authentication ticket
 
-    public XmlQuickBaseApi(HttpClient httpClient, IApiConfigProvider config)
+    public XmlQuickBaseApi(HttpClient httpClient, IOptionsMonitor<ApiSettingsConfig> settingsConfig)
     {
         _httpClient = httpClient;
-        _config = config;
+        _config = settingsConfig.Get(ApiSettingsConfig.XmlApiConfig);
+        _httpClient.BaseAddress = new Uri(_config.BaseApiUrl);
     }
 
-    public async Task<string> AuthenticateAsync(string parameter)
+    public async Task<string> AuthenticateAsync(AuthenticateRequestDto parameter)
     {
         string endpoint = string.Format(_config.Endpoints.Authenticate, parameter);
         
-        // Create XML request
-        var authRequest = new AuthenticateRequestDto
-        {
-            Username = parameter, // Assuming parameter is username
-            Password = "your-password" // In a real app, this would come from secure storage
-        };
+        // // Create XML request
+        // var authRequest = new AuthenticateRequestDto
+        // {
+        //     Username = parameter, // Assuming parameter is username
+        //     Password = "your-password" // In a real app, this would come from secure storage
+        // };
         
-        string xmlRequest = SerializeToXml(authRequest);
+        string xmlRequest = SerializeToXml(parameter);
         var content = new StringContent(xmlRequest, Encoding.UTF8, "application/xml");
         
         var response = await _httpClient.PostAsync(endpoint, content);
@@ -43,7 +44,7 @@ public class XmlQuickBaseApi : IQuickBaseApi
         return _ticket;
     }
 
-    public async Task<string> AddRecordAsync(string tableId, object recordData)
+    public async Task<string> AddRecordAsync(string tableId, AddRecordRequestDto recordData)
     {
         string endpoint = string.Format(_config.Endpoints.AddRecord, tableId);
         
