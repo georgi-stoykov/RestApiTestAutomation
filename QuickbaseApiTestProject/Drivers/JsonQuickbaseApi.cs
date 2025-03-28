@@ -10,7 +10,7 @@ using QuickbaseApiTestProject.Drivers.Interfaces;
 
 namespace QuickbaseApiTestProject.Drivers;
 
-public class JsonQuickbaseApi : IQuickbaseApi
+public class JsonQuickbaseApi 
 {
     private readonly HttpClient _httpClient;
     private readonly ApiSettingsConfig _config;

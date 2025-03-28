@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Xml;
 using Microsoft.Extensions.Options;
 using QuickbaseApiTestProject.Drivers.Interfaces;
 using QuickbaseApiTestProject.TestUtilities;
@@ -19,11 +20,12 @@ public class XmlQuickbaseApi : IQuickbaseApi
         this.httpClient.BaseAddress = new Uri(config.BaseApiUrl);
     }
 
-    public async Task<string> AuthenticateAsync(AuthenticateRequestDto body)
+    public async Task<BaseResponseDto> AuthenticateAsync(AuthenticateRequestDto body)
     {
         string endpoint = string.Format(config.Endpoints.Authenticate, body);
         
         string xmlRequest = SerializeToXml(body);
+        
         var content = new StringContent(xmlRequest, Encoding.UTF8, "application/xml");
         content.Headers.Add("QUICKBASE-ACTION", nameof(ApiActionsEnum.API_Authenticate));
         
@@ -34,34 +36,23 @@ public class XmlQuickbaseApi : IQuickbaseApi
         
         // Parse XML response to extract ticket
         var authResponse = DeserializeFromXml<BaseResponseDto>(xmlResponse);
-        ticket = authResponse.Ticket;
-        
-        return ticket;
+        return authResponse;
     }
 
-    public async Task<string> AddRecordAsync(string tableId, AddRecordRequestDto recordData)
+    public async Task<BaseResponseDto> AddRecordAsync(string tableId, AddRecordRequestDto addRequest)
     {
         string endpoint = string.Format(config.Endpoints.AddRecord, tableId);
         
-        // // Create XML request with ticket and record data
-        // var addRequest = new XmlAddRecordRequest
-        // {
-        //     Ticket = _ticket,
-        //     TableId = tableId,
-        //     Data = recordData
-        // };
-        //
-        // string xmlRequest = SerializeToXml(addRequest);
-        // var content = new StringContent(xmlRequest, Encoding.UTF8, "application/xml");
-        //
-        // var response = await _httpClient.PostAsync(endpoint, content);
-        // response.EnsureSuccessStatusCode();
-        //
-        // string xmlResponse = await response.Content.ReadAsStringAsync();
-        // var addResponse = DeserializeFromXml<XmlAddRecordResponse>(xmlResponse);
-        //
-        // return addResponse.RecordId;
-        return "";
+        string xmlRequest = SerializeToXml(addRequest);
+        var content = new StringContent(xmlRequest, Encoding.UTF8, "application/xml");
+        content.Headers.Add("QUICKBASE-ACTION", nameof(ApiActionsEnum.API_AddRecord));
+        
+        var response = await httpClient.PostAsync(endpoint, content);
+        response.EnsureSuccessStatusCode();
+        
+        string xmlResponse = await response.Content.ReadAsStringAsync();
+        var addResponse = DeserializeFromXml<BaseResponseDto>(xmlResponse);
+        return addResponse;
     }
 
     public async Task<bool> DeleteRecordAsync(string tableId, string recordId)
@@ -89,9 +80,22 @@ public class XmlQuickbaseApi : IQuickbaseApi
     private string SerializeToXml<T>(T obj)
     {
         var serializer = new XmlSerializer(typeof(T));
-        using var writer = new StringWriter();
-        serializer.Serialize(writer, obj);
-        return writer.ToString();
+        using var memoryStream = new MemoryStream();
+    
+        var xmlSettings = new XmlWriterSettings
+        {
+            Encoding = Encoding.UTF8,
+            Indent = true
+        };
+    
+        using var xmlWriter = XmlWriter.Create(memoryStream, xmlSettings);
+        serializer.Serialize(xmlWriter, obj);
+    
+        memoryStream.Position = 0;
+        using var streamReader = new StreamReader(memoryStream, Encoding.UTF8);
+        return streamReader.ReadToEnd();
+
+
     }
     
     private T DeserializeFromXml<T>(string xml)

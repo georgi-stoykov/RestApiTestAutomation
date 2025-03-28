@@ -5,4 +5,4 @@ bin/
 obj/
 /packages/
 QuickbaseApiTestProject/TestResult.xml
-/QuickbaseApiTestProject/appsettings.json
+*.sln.DotSetting*

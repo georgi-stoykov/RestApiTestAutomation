@@ -1,5 +1,6 @@
 ﻿namespace QuickbaseApiTestProject.DTOs;
 
+[XmlRoot("qdbapi")]
 public record BaseResponseDto
 {
     /// <summary>
