@@ -1,52 +1,55 @@
 ﻿namespace QuickbaseApiTestProject.DTOs.ResponseDTOs;
 
-using System.Collections.Generic;
-using System.Numerics;
-using System.Xml.Serialization;
-
-[XmlRoot("qdbapi")]
+[XmlRoot(XmlElementNames.QdbApi)]
 public record DoQueryResponseDto : BaseResponseDto
 {
-    [XmlElement("udata")] public string UserData { get; set; }
+    [XmlElement(XmlElementNames.UserData)]
+    public string UserData { get; set; }
 
-    [XmlElement("dbinfo")] public DbInfo DatabaseInfo { get; set; }
+    [XmlElement(XmlElementNames.Database.DatabaseInfo)]
+    public DbInfo DatabaseInfo { get; set; }
 
-    [XmlElement("variables")] public string Variables { get; set; }
+    [XmlElement(XmlElementNames.Database.Variables)]
+    public string Variables { get; set; }
 
-    [XmlElement("chdbids")] public string ChildDatabaseIds { get; set; }
+    [XmlElement(XmlElementNames.Database.ChildDatabaseIds)]
+    public string ChildDatabaseIds { get; set; }
 
-    [XmlElement("record")] public List<TableRecord> Records { get; set; }
+    [XmlElement("record")] 
+    public List<TableRecord> Records { get; set; }
 }
 
 public record DbInfo
 {
-    [XmlElement("name")] public string Name { get; set; }
+    [XmlElement(XmlElementNames.Database.Name)]
+    public string Name { get; set; }
 
-    [XmlElement("desc")] public string Description { get; set; }
+    [XmlElement(XmlElementNames.Database.Description)]
+    public string Description { get; set; }
 }
 
 public record TableRecord
 {
-    [XmlAttribute("rid")] public int RecordId { get; set; }
+    [XmlAttribute(XmlElementNames.Record.RecordId)] public int RecordId { get; set; }
 
-    [XmlElement("firstname")] public string FirstName { get; set; }
+    [XmlElement(XmlElementNames.Record.FirstName)] public string FirstName { get; set; }
 
-    [XmlElement("lastname")] public string LastName { get; set; }
+    [XmlElement(XmlElementNames.Record.LastName)] public string LastName { get; set; }
 
-    [XmlElement("age")] public int Age { get; set; }
+    [XmlElement(XmlElementNames.Record.Age)] public int Age { get; set; }
 
-    [XmlElement("date_of_birth")] public string DateOfBirth { get; set; }
+    [XmlElement(XmlElementNames.Record.DateOfBirth)] public string DateOfBirth { get; set; }
 
-    [XmlElement("website_url")] public string WebsiteUrl { get; set; }
+    [XmlElement(XmlElementNames.Record.WebsiteUrl)] public string WebsiteUrl { get; set; }
 
-    [XmlElement("email_address")] public string EmailAddress { get; set; }
+    [XmlElement(XmlElementNames.Record.EmailAddress)] public string EmailAddress { get; set; }
 
-    [XmlElement("mobile")] public string Mobile { get; set; }
+    [XmlElement(XmlElementNames.Record.Mobile)] public string Mobile { get; set; }
 
     // Using the string property approach for BigInteger serialization
     [XmlIgnore] public BigInteger UpdateId { get; set; }
 
-    [XmlElement("update_id")]
+    [XmlElement(XmlElementNames.Record.UpdateId)]
     public string UpdateIdString
     {
         get => UpdateId.ToString();

@@ -1,23 +1,23 @@
 ﻿namespace QuickbaseApiTestProject.DTOs.RequestDTOs;
 
-[XmlRoot("qdbapi")]
+[XmlRoot(XmlElementNames.QdbApi)]
 public record AuthenticateRequestDto
 {
-    [XmlElement("username")]
+    [XmlElement(XmlElementNames.Authentication.Username)]
     public required string Username { get; set; }
     
-    [XmlElement("password")]
+    [XmlElement(XmlElementNames.Authentication.Password)]
     public required string Password { get; set; }
 
     /// <summary>
     /// The number of hours the authentication token should remain valid
     /// </summary>
-    [XmlElement("hours")]
+    [XmlElement(XmlElementNames.Authentication.Hours)]
     public int Hours { get; set; }
 
     /// <summary>
     /// Optional user data that can be included in the request
     /// </summary>
-    [XmlElement("udata")]
+    [XmlElement(XmlElementNames.UserData)]
     public string UserData { get; set; }
 }

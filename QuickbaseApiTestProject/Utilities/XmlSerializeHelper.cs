@@ -5,13 +5,12 @@ namespace QuickbaseApiTestProject.Utilities;
 
 public static class XmlSerializeHelper
 {
-    private static XmlWriterSettings writerSettings = new XmlWriterSettings
+    private static readonly XmlWriterSettings writerSettings = new XmlWriterSettings
     {
         Encoding = Encoding.UTF8,
         Indent = true
     };
     
-
     public static string SerializeToXml<T>(T obj)
     {
         var serializer = new XmlSerializer(typeof(T));
@@ -30,7 +29,7 @@ public static class XmlSerializeHelper
         var serializer = new XmlSerializer(typeof(T));
         using var reader = new StringReader(xml);
         var serializedObj = (T)serializer.Deserialize(reader);
-        serializedObj.Should().NotBeNull($"Serialization failed for object of type {typeof(T)}");
-        return serializedObj;
+        Assert.That(serializedObj != null, $"Serialization failed for object of type {typeof(T)}");
+        return serializedObj!;
     }
 }

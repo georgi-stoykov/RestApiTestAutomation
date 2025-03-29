@@ -1,17 +1,17 @@
 ﻿namespace QuickbaseApiTestProject.DTOs.RequestDTOs;
 
-[XmlRoot("qdbapi")]
+[XmlRoot(XmlElementNames.QdbApi)]
 public record DoQueryRequestDto
 {
-    [XmlElement("udata")]
+    [XmlElement(XmlElementNames.UserData)]
     public string UserData { get; set; }
     
-    [XmlElement("ticket")]
+    [XmlElement(XmlElementNames.Ticket)]
     public string Ticket { get; set; }
     
-    [XmlElement("apptoken")]
+    [XmlElement(XmlElementNames.AppToken)]
     public string AppToken { get; set; }
     
-    [XmlElement("includeRids")]
+    [XmlElement(XmlElementNames.Record.IncludeRecordId)]
     public int IncludeRecordId { get; set; }
 }

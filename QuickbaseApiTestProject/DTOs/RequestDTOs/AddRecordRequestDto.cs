@@ -1,21 +1,21 @@
 ﻿namespace QuickbaseApiTestProject.DTOs;
 
-[XmlRoot("qdbapi")]
+[XmlRoot(XmlElementNames.QdbApi)]
 public class AddRecordRequestDto
 {
-    [XmlElement("udata")]
+    [XmlElement(XmlElementNames.UserData)]
     public string UserData { get; set; }
     
-    [XmlElement("ticket")]
+    [XmlElement(XmlElementNames.Ticket)]
     public string Ticket { get; set; }
     
-    [XmlElement("apptoken")]
+    [XmlElement(XmlElementNames.AppToken)]
     public string AppToken { get; set; }
     
     [XmlIgnore]
     public Dictionary<string, string> Fields { get; set; } = new Dictionary<string, string>();
     
-    [XmlElement("field")]
+    [XmlElement(XmlElementNames.Field)]
     public List<Field> FieldList
     {
         get
@@ -42,12 +42,10 @@ public class AddRecordRequestDto
     
     public class Field
     {
-        [XmlAttribute("name")]
-        [JsonPropertyName("name")]
+        [XmlAttribute(XmlElementNames.FieldKeyValue.Name)]
         public string Name { get; set; }
         
         [XmlText]
-        [JsonPropertyName("value")]
         public string Value { get; set; }
     }
 }
