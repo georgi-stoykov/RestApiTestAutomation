@@ -8,6 +8,6 @@ public interface IQuickbaseApi
 {
     Task<BaseResponse<AuthenticationResponseDto>> AuthenticateAsync(AuthenticateRequestDto body);
     Task<BaseResponse<AddRecordResponseDto>> AddRecordAsync(string tableId, AddRecordRequestDto recordRequestData);
-    Task<bool> DeleteRecordAsync(string tableId, string recordId);
+    Task<BaseResponse<DoQueryResponseDto>> GetTableRecordsAsync(string tableId, DoQueryRequestDto doQueryRequestDto);
 }
 

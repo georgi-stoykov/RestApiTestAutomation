@@ -49,4 +49,18 @@ public class XmlRequestProvider
         modifyRequest?.Invoke(request);
         return request;
     }
+    
+    public DoQueryRequestDto DoQueryRequest(Action<DoQueryRequestDto>? modifyRequest = null)
+    {
+        var request =  new DoQueryRequestDto
+        {
+            UserData = "mydata",
+            Ticket = testSettings.Ticket,
+            AppToken = testSettings.AppToken,
+            IncludeRecordId = 1
+        };
+        
+        modifyRequest?.Invoke(request);
+        return request;
+    }
 }

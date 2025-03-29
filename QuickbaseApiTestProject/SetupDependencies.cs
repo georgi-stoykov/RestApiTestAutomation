@@ -4,7 +4,6 @@ using QuickbaseApiTestProject.Drivers;
 using QuickbaseApiTestProject.Drivers.Interfaces;
 using QuickbaseApiTestProject.TestUtilities;
 using QuickbaseApiTestProject.Drivers.XmlQuickBaseApi;
-using QuickbaseApiTestProject.TestUtilities.DTOs;
 using QuickbaseApiTestProject.Utilities;
 
 namespace QuickbaseApiTestProject;
@@ -33,9 +32,6 @@ public class SetupDependencies
 
         // 3. Register our API config provider  
         services.AddSingleton<XmlRequestProvider>();
-        services.AddSingleton<TestRunContext>();
-        
-        services.AddTransient<TestCaseContext>();
         
         // 4. Register HTTP client using the config provider`
         RegisterQuickBaseApi(services, configuration);

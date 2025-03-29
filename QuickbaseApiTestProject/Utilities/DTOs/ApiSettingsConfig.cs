@@ -19,11 +19,5 @@ public class Endpoints
         [Required]
         public string Authenticate { get; set; }
         [Required]
-        public string AddRecord { get; set; }
-        [Required]
-        public string DeleteRecord { get; set; }
-        [Required]
-        public string PurgeRecords { get; set; }
-        [Required]
-        public string EditRecord { get; set; }
+        public string Record { get; set; }
 }

@@ -53,4 +53,10 @@ public class AddRecordFailureTests
     {
         true.Should().BeTrue();
     }
+    
+    [Test()]
+    public void AddRecord_NonexistentTable_ReturnsError()
+    {
+        true.Should().BeTrue();
+    }
 }

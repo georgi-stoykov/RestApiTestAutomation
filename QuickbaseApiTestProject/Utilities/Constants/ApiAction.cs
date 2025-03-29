@@ -1,7 +1,9 @@
 ﻿namespace QuickbaseApiTestProject.TestUtilities.Constants;
 
-public enum ApiActionsEnum
+public enum ApiAction
 {
     API_Authenticate,
     API_AddRecord,
+    API_PurgeRecords,
+    API_DoQuery
 }
