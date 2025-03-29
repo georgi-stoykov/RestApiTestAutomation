@@ -13,7 +13,7 @@ public class AddRecordRequestDto
     public string AppToken { get; set; }
     
     [XmlIgnore]
-    public Dictionary<string, string> Fields { get; set; } = new Dictionary<string, string>();
+    public Dictionary<string, FieldInfo> Fields { get; set; } = new Dictionary<string, FieldInfo>();
     
     [XmlElement(XmlElementNames.Field)]
     public List<Field> FieldList
@@ -23,18 +23,38 @@ public class AddRecordRequestDto
             var result = new List<Field>();
             foreach (var pair in Fields)
             {
-                result.Add(new Field { Name = pair.Key, Value = pair.Value });
+                var field = new Field { Value = pair.Value.Value };
+                
+                // Set either Name or Fid based on the field info
+                if (pair.Value.IsNameAttribute)
+                {
+                    field.Name = pair.Key;
+                }
+                else
+                {
+                    field.Fid = pair.Key;
+                }
+                
+                result.Add(field);
             }
             return result;
         }
         set
         {
-            Fields = new Dictionary<string, string>();
+            Fields = new Dictionary<string, FieldInfo>();
             if (value != null)
             {
                 foreach (var field in value)
                 {
-                    Fields[field.Name] = field.Value;
+                    string key = field.Name ?? field.Fid;
+                    if (!string.IsNullOrEmpty(key))
+                    {
+                        Fields[key] = new FieldInfo
+                        {
+                            Value = field.Value,
+                            IsNameAttribute = !string.IsNullOrEmpty(field.Name)
+                        };
+                    }
                 }
             }
         }
@@ -42,10 +62,38 @@ public class AddRecordRequestDto
     
     public class Field
     {
-        [XmlAttribute(XmlElementNames.FieldKeyValue.Name)]
+        [XmlAttribute(XmlElementNames.Record.FieldAttribute.Name)]
         public string Name { get; set; }
+        
+        [XmlAttribute(XmlElementNames.Record.FieldAttribute.Fid)]
+        public string Fid { get; set; }
         
         [XmlText]
         public string Value { get; set; }
     }
+    
+    public class FieldInfo
+    {
+        public string Value { get; set; }
+        public bool IsNameAttribute { get; set; }
+    }
+
+    public void AddNameField(string name, string value)
+    {
+        this.Fields[name] = new AddRecordRequestDto.FieldInfo
+        {
+            Value = value,
+            IsNameAttribute = true
+        };
+    }
+
+    public void AddFidField(string fid, string value)
+    {
+        Fields[fid] = new AddRecordRequestDto.FieldInfo
+        {
+            Value = value,
+            IsNameAttribute = false
+        };
+    }
+
 }

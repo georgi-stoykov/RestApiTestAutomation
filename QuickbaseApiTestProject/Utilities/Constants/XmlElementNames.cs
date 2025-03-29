@@ -34,6 +34,11 @@ public record XmlElementNames
 
     public record Record
     {
+        public const string UpdateId = "update_id";
+        public const string RecordId = "rid";
+        public const string IncludeRecordId = "includeRids";
+        public const string RecordAsString = "record";
+        
         public const string FirstName = "firstname";
         public const string LastName = "lastname";
         public const string Age = "age";
@@ -41,14 +46,21 @@ public record XmlElementNames
         public const string WebsiteUrl = "website_url";
         public const string EmailAddress = "email_address";
         public const string Mobile = "mobile";
-        public const string UpdateId = "update_id";
-        public const string RecordId = "rid";
-        public const string IncludeRecordId = "includeRids";
-    }
-    
-    public record FieldKeyValue
-    {
-        public const string Name = "name";
-        public const string Value = "value";
+
+        public record Id
+        {
+            public const string FirstName = "6";
+            public const string LastName = "7";
+            public const string Age = "8";
+            public const string DateOfBirth = "9";
+            public const string WebsiteUrl = "10";
+            public const string EmailAddress = "11";
+            public const string Mobile = "12";
+        }
+        public record FieldAttribute
+        {
+            public const string Name = "name";
+            public const string Fid = "fid";
+        }
     }
 }
