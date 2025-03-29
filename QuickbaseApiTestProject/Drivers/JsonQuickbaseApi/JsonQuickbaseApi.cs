@@ -1,20 +1,15 @@
 ﻿using Microsoft.Extensions.Options;
+using QuickbaseApiTestProject.Contracts;
+using QuickbaseApiTestProject.DTOs.RequestDTOs;
+using QuickbaseApiTestProject.DTOs.ResponseDTOs;
 using QuickbaseApiTestProject.TestUtilities;
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using QuickbaseApiTestProject.Drivers.Interfaces;
 
-namespace QuickbaseApiTestProject.Drivers;
+namespace QuickbaseApiTestProject.Drivers.JsonQuickbaseApi;
 
-public class JsonQuickbaseApi  : IQuickbaseApi
+public class JsonQuickbaseApi
 {
     private readonly HttpClient _httpClient;
     private readonly ApiSettingsConfig _config;
-    private string _authToken; // For storing JWT token
 
     public JsonQuickbaseApi(HttpClient httpClient, IOptionsMonitor<ApiSettingsConfig> settingsConfig)
     {
@@ -23,12 +18,12 @@ public class JsonQuickbaseApi  : IQuickbaseApi
         _httpClient.BaseAddress = new Uri(_config!.BaseApiUrl);
     }
 
-    public Task<BaseResponseDto> AuthenticateAsync(AuthenticateRequestDto body)
+    public Task<BaseResponse<AuthenticationResponseDto>> AuthenticateAsync(AuthenticateRequestDto body)
     {
         throw new NotImplementedException();
     }
 
-    public Task<BaseResponseDto> AddRecordAsync(string tableId, AddRecordRequestDto recordRequestData)
+    public Task<BaseResponse<BaseResponseDto>> AddRecordAsync(string tableId, AddRecordRequestDto recordRequestData)
     {
         throw new NotImplementedException();
     }

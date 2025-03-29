@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
+using QuickbaseApiTestProject.DTOs.RequestDTOs;
 using QuickbaseApiTestProject.TestUtilities;
 
-namespace QuickbaseApiTestProject.Drivers;
+namespace QuickbaseApiTestProject.Drivers.XmlQuickBaseApi;
 
 public class XmlRequestProvider
 {
-    private TestSettingsConfig testSettings;
+    private readonly TestSettingsConfig testSettings;
 
     public XmlRequestProvider(IOptions<TestSettingsConfig> testSettings)
     {

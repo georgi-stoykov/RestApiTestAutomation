@@ -1,6 +1,6 @@
-﻿namespace QuickbaseApiTestProject.TestUtilities;
+﻿namespace QuickbaseApiTestProject.TestUtilities.DTOs;
 
-public record TestContext
+public record TestCaseContext
 {
     public required object RequestData { get; set; }
     public required object ResponseData { get; set; }

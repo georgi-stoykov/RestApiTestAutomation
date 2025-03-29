@@ -1,14 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
-using System.IO;
 using QuickbaseApiTestProject.Drivers;
 using QuickbaseApiTestProject.Drivers.Interfaces;
 using QuickbaseApiTestProject.TestUtilities;
-using Microsoft.Extensions.Http;
-using QuickbaseApiTestProject.TestUtilities.Constants;
-using TestContext = NUnit.Framework.TestContext;
+using QuickbaseApiTestProject.Drivers.XmlQuickBaseApi;
+using QuickbaseApiTestProject.TestUtilities.DTOs;
+using QuickbaseApiTestProject.Utilities;
 
 namespace QuickbaseApiTestProject;
 
@@ -16,13 +13,13 @@ public class SetupDependencies
 {
     public static ServiceProvider ConfigureServices()
     {
+        var services = new ServiceCollection();
+        
         // 1. Build the Configuration
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
             .Build();
-        
-        var services = new ServiceCollection();
         
         // 2. Bind the configuration settings
         services.AddOptions<TestSettingsConfig>()
@@ -36,6 +33,9 @@ public class SetupDependencies
 
         // 3. Register our API config provider  
         services.AddSingleton<XmlRequestProvider>();
+        services.AddSingleton<TestRunContext>();
+        
+        services.AddTransient<TestCaseContext>();
         
         // 4. Register HTTP client using the config provider`
         RegisterQuickBaseApi(services, configuration);
@@ -56,7 +56,7 @@ public class SetupDependencies
         }
         else
         {
-            services.AddHttpClient<IQuickbaseApi, JsonQuickbaseApi>();
+            // services.AddHttpClient<IQuickbaseApi, JsonQuickbaseApi>();
         }
     }
 }

@@ -4,19 +4,15 @@
 public class AddRecordRequestDto
 {
     [XmlElement("udata")]
-    [JsonPropertyName("udata")]
     public string UserData { get; set; }
     
     [XmlElement("ticket")]
-    [JsonPropertyName("ticket")]
     public string Ticket { get; set; }
     
     [XmlElement("apptoken")]
-    [JsonPropertyName("apptoken")]
     public string AppToken { get; set; }
     
     [XmlIgnore]
-    [JsonIgnore]
     public Dictionary<string, string> Fields { get; set; } = new Dictionary<string, string>();
     
     [XmlElement("field")]

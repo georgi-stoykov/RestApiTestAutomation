@@ -4,5 +4,4 @@ public enum ApiActionsEnum
 {
     API_Authenticate,
     API_AddRecord,
-
 }
