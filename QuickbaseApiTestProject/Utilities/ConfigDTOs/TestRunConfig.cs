@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace QuickbaseApiTestProject.TestUtilities;
+namespace QuickbaseApiTestProject.Utilities.ConfigDTOs;
 
 public record ApiMode
 {

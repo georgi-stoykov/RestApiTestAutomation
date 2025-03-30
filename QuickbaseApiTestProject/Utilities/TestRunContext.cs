@@ -4,6 +4,7 @@ using QuickbaseApiTestProject.Drivers.Interfaces;
 using QuickbaseApiTestProject.Drivers.XmlQuickBaseApi;
 using QuickbaseApiTestProject.DTOs.RequestDTOs;
 using QuickbaseApiTestProject.TestUtilities;
+using QuickbaseApiTestProject.Utilities.ConfigDTOs;
 
 namespace QuickbaseApiTestProject.Utilities;
 

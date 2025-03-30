@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using QuickbaseApiTestProject.Drivers;
 using QuickbaseApiTestProject.Drivers.Interfaces;
-using QuickbaseApiTestProject.TestUtilities;
 using QuickbaseApiTestProject.Drivers.XmlQuickBaseApi;
 using QuickbaseApiTestProject.Utilities;
+using QuickbaseApiTestProject.Utilities.ConfigDTOs;
 
 namespace QuickbaseApiTestProject;
 

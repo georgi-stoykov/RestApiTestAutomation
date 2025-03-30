@@ -5,6 +5,7 @@ using QuickbaseApiTestProject.Drivers.XmlQuickBaseApi;
 using QuickbaseApiTestProject.DTOs.ResponseDTOs;
 using QuickbaseApiTestProject.TestUtilities;
 using QuickbaseApiTestProject.Utilities;
+using QuickbaseApiTestProject.Utilities.ConfigDTOs;
 
 namespace QuickbaseApiTestProject.Tests.AddRecords;
 
