@@ -4,13 +4,13 @@
 public class AddRecordRequestDto
 {
     [XmlElement(XmlElementNames.UserData)]
-    public string UserData { get; set; }
+    public string? UserData { get; set; }
     
     [XmlElement(XmlElementNames.Ticket)]
-    public string Ticket { get; set; }
+    public string? Ticket { get; set; }
     
     [XmlElement(XmlElementNames.AppToken)]
-    public string AppToken { get; set; }
+    public string? AppToken { get; set; }
 
     [XmlElement(XmlElementNames.Record.IgnoreError)]
     public int? IgnoreError { get; set; }

@@ -17,7 +17,7 @@ public class AddRecordFailureTests : RecordTests
         workEmailAsTestIdentifier = DataGenerator.NewEmail();
     }
     
-    [Test]
+    [Test(Description = "Record cannot be created without providing all mandatory field ids")]
     public async Task AddRecord_MissingMandatoryFieldIDs_ReturnsError()
     {
         var request = requestProvider.AddRecordRequest();
@@ -32,7 +32,7 @@ public class AddRecordFailureTests : RecordTests
         await AssertRecordWasNotCreatedAsync();
     }
 
-    [Test]
+    [Test(Description = "Record cannot be created without providing all mandatory field names")]
     public async Task AddRecord_MissingMandatoryFieldNames_ReturnsError()
     {
         var request = requestProvider.AddRecordRequest();
@@ -47,7 +47,7 @@ public class AddRecordFailureTests : RecordTests
         await AssertRecordWasNotCreatedAsync();
     }
     
-    [Test]
+    [Test(Description = "Record cannot be created with field value exceeding its length limit")]
     public async Task AddRecord_ExceedFieldSize_ReturnsError()
     {
         var request = requestProvider.AddRecordRequest();
@@ -66,7 +66,7 @@ public class AddRecordFailureTests : RecordTests
         await AssertRecordWasNotCreatedAsync();
     }
     
-    [Test(Description = "AAAAAAAAAAAA")]
+    [Test(Description = "When ignoring of errors is disabled, passing value to built-in fields fails the record creation request")]
     public async Task AddRecord_WriteInBuiltInField_DisabledErrorIgnore_ReturnsError()
     {
         var request = requestProvider.AddRecordRequest();
@@ -80,8 +80,8 @@ public class AddRecordFailureTests : RecordTests
         await AssertRecordWasNotCreatedAsync();
     }
     
-    [Test(Description = "AAAAAAAAAAAA")]
-    // ToDo: Ask if possible bug. Not sure if the error code should be "2" or "50"
+    [Test(Description = "Passing invalid data type value for mandatory record field fails the record creation")]
+    // ToDo: Ask if possible bug. The returned ErrorCode and ErrorText are strange. Not sure if the error code should be "2" or "50"
     public async Task AddRecord_InvalidDataForFieldType_MandatoryField_StrictValidation_ErrorResult()
     {
         var request = requestProvider.AddRecordRequest();
@@ -96,20 +96,20 @@ public class AddRecordFailureTests : RecordTests
         await AssertRecordWasNotCreatedAsync();
     }
     
-    [Test]
-    // ToDo: Create another tests with invalid user token
+    [Test(Description = "Request for adding record without authentication tokens fails")]
+    // ToDo: For some reason the authentication is working even without passing one or both of "Ticket" and "AppToken" values. These test can be split into multiple ones.
     public async Task AddRecord_Unauthorized_ReturnsError()
     {
         var request = requestProvider.AddRecordRequest(useNameFields: false, includeOptionalFields: false);
-        request.Ticket = DataGenerator.AlphaNumberString();
-        request.AppToken = null;
+        request.Ticket = null;
+        // request.AppToken = null;
         var response = await quickbaseApi.AddRecordAsync(tableId, request);
         
         AssertFailedResponseProperties(response, Constants.ErrorCode.InvalidApplicationToken, Constants.ErrorText.InvalidApplicationToken, HttpStatusCode.BadRequest);
         await AssertRecordWasNotCreatedAsync();
     }
     
-    [Test()]
+    [Test(Description = "Record cannot be added field unique field value when another request with that value already exists in the table")]
     public async Task AddRecord_UniqueField_ReturnsError()
     {
         var request = requestProvider.AddRecordRequest();
@@ -131,7 +131,7 @@ public class AddRecordFailureTests : RecordTests
         await AssertRecordWasNotCreatedAsync(x => x.PersonalEmail == personalEmail2);
     }
     
-    [Test]
+    [Test(Description = "Request to create record for non-existent fails")]
     public async Task AddRecord_NonexistentTable_ReturnsError()
     {
         var request = requestProvider.AddRecordRequest(useNameFields: false, includeOptionalFields: false);

@@ -27,33 +27,13 @@ public class SetupDependencies
         services.AddOptions<ApiSettingsConfig>(nameof(ApiSettingsConfig.XmlApiConfig))
             .Bind(configuration.GetSection(nameof(ApiSettingsConfig.XmlApiConfig)));
 
-        services.AddOptions<ApiSettingsConfig>(nameof(ApiSettingsConfig.JsonApiConfig))
-            .Bind(configuration.GetSection(nameof(ApiSettingsConfig.JsonApiConfig)));
-
         // 3. Register our API config provider  
         services.AddSingleton<XmlRequestProvider>();
         services.AddSingleton<TestRunContext>();
         
         // 4. Register HTTP client using the config provider`
-        RegisterQuickBaseApi(services, configuration);
+        services.AddHttpClient<IQuickbaseApi, XmlQuickbaseApi>();
 
         return services.BuildServiceProvider();
-    }
-    
-    private static void RegisterQuickBaseApi(IServiceCollection services, IConfiguration configuration)
-    {
-        // Get API mode from configuration
-        var apiMode =
-            configuration.GetSection(nameof(TestRunConfig))[nameof(TestRunConfig.ApiMode)];
-    
-        // Register the appropriate implementation based on ApiMode
-        if (string.Equals(apiMode, ApiMode.XML, StringComparison.OrdinalIgnoreCase))
-        {
-            services.AddHttpClient<IQuickbaseApi, XmlQuickbaseApi>();
-        }
-        else
-        {
-            // services.AddHttpClient<IQuickbaseApi, JsonQuickbaseApi>();
-        }
     }
 }

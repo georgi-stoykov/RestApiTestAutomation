@@ -5,7 +5,6 @@ namespace QuickbaseApiTestProject.TestUtilities;
 public class ApiSettingsConfig
 {
         public const string XmlApiConfig = "XmlApiConfig";
-        public const string JsonApiConfig = "JsonApiConfig";
     
         [Required]
         public string BaseApiUrl { get; set; }

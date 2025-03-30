@@ -31,7 +31,7 @@ public class XmlQuickbaseApi : IQuickbaseApi
         string xmlRequest = XmlSerializeHelper.SerializeToXml(requestData);
         
         var content = new StringContent(xmlRequest, encodingType, mediaType);
-        content.Headers.Add("QUICKBASE-ACTION", nameof(ApiAction.API_Authenticate));
+        content.Headers.Add(RequestHeaders.QuickBaseAction, nameof(ApiAction.API_Authenticate));
         
         var authResponse = await httpClient.PostAsync(endpoint, content);
         return new BaseResponse<AuthenticationResponseDto>(authResponse);
@@ -43,7 +43,7 @@ public class XmlQuickbaseApi : IQuickbaseApi
         
         string xmlRequest = XmlSerializeHelper.SerializeToXml(addRequest);
         var content = new StringContent(xmlRequest, encodingType, mediaType);
-        content.Headers.Add("QUICKBASE-ACTION", nameof(ApiAction.API_AddRecord));
+        content.Headers.Add(RequestHeaders.QuickBaseAction, nameof(ApiAction.API_AddRecord));
         
         var addRecordResponse = await httpClient.PostAsync(endpoint, content);
         return new BaseResponse<AddRecordResponseDto>(addRecordResponse);
@@ -55,30 +55,9 @@ public class XmlQuickbaseApi : IQuickbaseApi
         
         string xmlRequest = XmlSerializeHelper.SerializeToXml(doQueryRequestDto);
         var content = new StringContent(xmlRequest, encodingType, mediaType);
-        content.Headers.Add("QUICKBASE-ACTION", nameof(ApiAction.API_DoQuery));
+        content.Headers.Add(RequestHeaders.QuickBaseAction, nameof(ApiAction.API_DoQuery));
         
         var tableRecordsResponse = await httpClient.PostAsync(endpoint, content);
         return new BaseResponse<DoQueryResponseDto>(tableRecordsResponse);
-    }
-
-    public async Task<bool> DeleteRecordAsync(string tableId, string recordId)
-    {
-        // Implementation for XML delete request
-        string endpoint = config.Endpoints.Record;
-        
-        // var deleteRequest = new XmlDeleteRecordRequest
-        // {
-        //     Ticket = _ticket,
-        //     TableId = tableId,
-        //     RecordId = recordId
-        // };
-        //
-        // string xmlRequest = SerializeToXml(deleteRequest);
-        // var content = new StringContent(xmlRequest, Encoding.UTF8, "application/xml");
-        //
-        // var response = await _httpClient.PostAsync(endpoint, content);
-        // return response.IsSuccessStatusCode;
-        
-        return true;
     }
 }
