@@ -29,7 +29,7 @@ public class AddRecordFailureTests : RecordTests
         var response = await quickbaseApi.AddRecordAsync(tableId, request);
         
         AssertFailedResponseProperties(response, Constants.ErrorCode.MissingRequiredField, Constants.ErrorText.MissingRequiredValue);
-        await AssertRecordWasNotCreatedAsync(workEmailAsTestIdentifier);
+        await AssertRecordWasNotCreatedAsync();
     }
 
     [Test]
@@ -44,7 +44,7 @@ public class AddRecordFailureTests : RecordTests
         var response = await quickbaseApi.AddRecordAsync(tableId, request);
         
         AssertFailedResponseProperties(response, Constants.ErrorCode.MissingRequiredField, Constants.ErrorText.MissingRequiredValue);
-        await AssertRecordWasNotCreatedAsync(workEmailAsTestIdentifier);
+        await AssertRecordWasNotCreatedAsync();
     }
     
     [Test]
@@ -63,7 +63,7 @@ public class AddRecordFailureTests : RecordTests
 
         var response = await quickbaseApi.AddRecordAsync(tableId, request);
         AssertFailedResponseProperties(response, Constants.ErrorCode.InvalidInput, Constants.ErrorText.InvalidInput, HttpStatusCode.BadRequest);
-        await AssertRecordWasNotCreatedAsync(workEmailAsTestIdentifier);
+        await AssertRecordWasNotCreatedAsync();
     }
     
     [Test(Description = "AAAAAAAAAAAA")]
@@ -77,7 +77,7 @@ public class AddRecordFailureTests : RecordTests
         var response = await quickbaseApi.AddRecordAsync(tableId, request);
         
         AssertFailedResponseProperties(response, Constants.ErrorCode.CannotChangeValue, Constants.ErrorText.CannotChangeValue, HttpStatusCode.BadRequest);
-        await AssertRecordWasNotCreatedAsync(workEmailAsTestIdentifier);
+        await AssertRecordWasNotCreatedAsync();
     }
     
     [Test(Description = "AAAAAAAAAAAA")]
@@ -93,7 +93,7 @@ public class AddRecordFailureTests : RecordTests
 
         var response = await quickbaseApi.AddRecordAsync(tableId, request);
         AssertFailedResponseProperties(response, Constants.ErrorCode.MissingRequiredField, Constants.ErrorText.MissingRequiredValue);
-        await AssertRecordWasNotCreatedAsync(workEmailAsTestIdentifier);
+        await AssertRecordWasNotCreatedAsync();
     }
     
     [Test]
@@ -106,7 +106,7 @@ public class AddRecordFailureTests : RecordTests
         var response = await quickbaseApi.AddRecordAsync(tableId, request);
         
         AssertFailedResponseProperties(response, Constants.ErrorCode.InvalidApplicationToken, Constants.ErrorText.InvalidApplicationToken, HttpStatusCode.BadRequest);
-        await AssertRecordWasNotCreatedAsync(workEmailAsTestIdentifier);
+        await AssertRecordWasNotCreatedAsync();
     }
     
     [Test()]
@@ -118,14 +118,17 @@ public class AddRecordFailureTests : RecordTests
         request.AddFieldAsName(XmlElementNames.Record.LastName, "TestLastName");
         request.AddFieldAsName(XmlElementNames.Record.Age, "25");
         request.AddFieldAsName(XmlElementNames.Record.WorkEmail, workEmailAsTestIdentifier);
-        request.AddFieldAsName(XmlElementNames.Record.PersonalEmail, workEmailAsTestIdentifier);
+        var personalEmail1 = DataGenerator.NewEmail();
+        request.AddFieldAsName(XmlElementNames.Record.PersonalEmail, personalEmail1);
 
         var response1 = await quickbaseApi.AddRecordAsync(tableId, request);
-        await AssertRecordWasCreatedAsync(workEmailAsTestIdentifier);
-        
+        await AssertRecordWasCreatedAsync(x => x.PersonalEmail == personalEmail1);
+
+        var personalEmail2 = DataGenerator.NewEmail();
+        request.GetField(XmlElementNames.Record.WorkEmail).Value = personalEmail2;
         var response2 = await quickbaseApi.AddRecordAsync(tableId, request);
         AssertFailedResponseProperties(response2, Constants.ErrorCode.UniqueFieldValueDuplication, Constants.ErrorText.UniqueFieldValueDuplication);
-        await AssertRecordWasNotCreatedAsync(workEmailAsTestIdentifier);
+        await AssertRecordWasNotCreatedAsync(x => x.PersonalEmail == personalEmail2);
     }
     
     [Test]
@@ -137,7 +140,7 @@ public class AddRecordFailureTests : RecordTests
         var response = await quickbaseApi.AddRecordAsync(nonExistentTableId, request);
 
         AssertFailedResponseProperties(response, Constants.ErrorCode.NoSuchDatabase, Constants.ErrorText.NoSuchDatabase);
-        await AssertRecordWasNotCreatedAsync(workEmailAsTestIdentifier);
+        await AssertRecordWasNotCreatedAsync();
     }
     
     private void AssertFailedResponseProperties(
@@ -155,15 +158,17 @@ public class AddRecordFailureTests : RecordTests
         Assert.That(response.Body.UpdateId == 0);
     }
     
-    private async Task AssertRecordWasCreatedAsync(string uniqueWorkEmailIdentifier)
+    private async Task AssertRecordWasCreatedAsync(Func<TableRecord, bool>? uniqueRecordFilter = null)
     {
-        var tableRecord = await GetTableRecordsAsync(x => x.WorkEmail == uniqueWorkEmailIdentifier);
+        uniqueRecordFilter = uniqueRecordFilter ?? (x => x.WorkEmail == workEmailAsTestIdentifier);
+        var tableRecord = await GetTableRecordsAsync(uniqueRecordFilter);
         Assert.That(tableRecord != null, Constants.AssertionMessage.MissingExpectedRecord);
     }
     
-    private async Task AssertRecordWasNotCreatedAsync(string uniqueIdentifier)
+    private async Task AssertRecordWasNotCreatedAsync(Func<TableRecord, bool>? uniqueRecordFilter = null)
     {
-        var tableRecord = await GetTableRecordsAsync(x => x.WorkEmail == uniqueIdentifier);
+        uniqueRecordFilter = uniqueRecordFilter ?? (x => x.WorkEmail == workEmailAsTestIdentifier);
+        var tableRecord = await GetTableRecordsAsync(uniqueRecordFilter);
         Assert.That(tableRecord == null, Constants.AssertionMessage.UnexpectedRecord);
     }
 }
