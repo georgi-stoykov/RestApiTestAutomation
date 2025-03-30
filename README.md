@@ -1,5 +1,5 @@
 ## Things to improve
-1. Assertion method's statements are sequential and at failure give very little information
+1. Assertion method's statements are sequential and at failure give very little information. Using the library "FluentAssertions" would be great but its license is no longer free for comercial use.
 2. Setting and getting  "AddRecordRequestDto" fields is awkwardly constructed because of the support for fields with XML attribute "name" and fields with XML attribute "fid" has to be supported.
 3. The assertion of fields with type "Date" is commented for now because a parser for milliseconds has to be created.
 4. There are too many constants. It would be better if they could be decorated with attributes 
