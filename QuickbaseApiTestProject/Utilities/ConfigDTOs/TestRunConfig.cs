@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace QuickbaseApiTestProject.Utilities.ConfigDTOs;
+﻿namespace QuickbaseApiTestProject.Utilities.ConfigDTOs;
 
 public record ApiMode
 {
@@ -9,7 +7,6 @@ public record ApiMode
 
 public class TestRunConfig
 {
-    [Required]
     public string ApiMode { get; set; }
     
     public string Username { get; set; }
