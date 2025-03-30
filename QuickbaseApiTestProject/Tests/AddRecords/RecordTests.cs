@@ -12,7 +12,7 @@ namespace QuickbaseApiTestProject.Tests.AddRecords;
 [TestFixture]
 public class RecordTests
 {
-    protected readonly string tableId = TestServicesProvider.GetService<IOptions<TestRunConfig>>().Value.TestTableId;
+    protected readonly string tableId = TestServicesProvider.GetService<IOptions<TestRunConfig>>().Value.TestTableId!;
     protected IQuickbaseApi quickbaseApi = TestServicesProvider.GetService<IQuickbaseApi>();
     protected XmlRequestProvider requestProvider = TestServicesProvider.GetService<XmlRequestProvider>();
     
