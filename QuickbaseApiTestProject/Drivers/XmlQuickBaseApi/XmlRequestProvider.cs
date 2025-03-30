@@ -36,7 +36,7 @@ public class XmlRequestProvider
     {
         var request =  new AddRecordRequestDto
         {
-            UserData = CommonConstants.UserData,
+            UserData = Constants.UserData,
             Ticket = testRunContext.Ticket,
             AppToken = testRunConfig.AppToken,
             Fields = new Dictionary<string, AddRecordRequestDto.FieldInfo>()
@@ -44,23 +44,23 @@ public class XmlRequestProvider
 
         if (withNames)
         {
-            request.AddNameField(XmlElementNames.Record.FirstName, "TestFirstName");
-            request.AddNameField(XmlElementNames.Record.LastName, "TestLastName");
-            request.AddNameField(XmlElementNames.Record.Age, "25");
-            request.AddNameField(XmlElementNames.Record.DateOfBirth, "01-01-1980");
-            request.AddNameField(XmlElementNames.Record.WebsiteUrl, "https://www.linkedin.com/feed/");
-            request.AddNameField(XmlElementNames.Record.EmailAddress, DataGenerator.Email());
-            request.AddNameField(XmlElementNames.Record.Mobile, "(25) 412-3123"); // to test with value "254123123"
+            request.AddFieldAsName(XmlElementNames.Record.FirstName, "TestFirstName");
+            request.AddFieldAsName(XmlElementNames.Record.LastName, "TestLastName");
+            request.AddFieldAsName(XmlElementNames.Record.Age, "25");
+            request.AddFieldAsName(XmlElementNames.Record.DateOfBirth, "01-01-1980");
+            request.AddFieldAsName(XmlElementNames.Record.WebsiteUrl, "https://www.linkedin.com/feed/");
+            request.AddFieldAsName(XmlElementNames.Record.EmailAddress, DataGenerator.Email());
+            request.AddFieldAsName(XmlElementNames.Record.Mobile, "(25) 412-3123"); // to test with value "254123123"
         }
         else
         {
-            request.AddFidField(XmlElementNames.Record.Id.FirstName, "TestFirstName");
-            request.AddFidField(XmlElementNames.Record.Id.LastName, "TestLastName");
-            request.AddFidField(XmlElementNames.Record.Id.Age, "25");
-            request.AddFidField(XmlElementNames.Record.Id.DateOfBirth, "01-01-1980");
-            request.AddFidField(XmlElementNames.Record.Id.WebsiteUrl, "https://www.linkedin.com/feed/");
-            request.AddFidField(XmlElementNames.Record.Id.EmailAddress, DataGenerator.Email());
-            request.AddFidField(XmlElementNames.Record.Id.Mobile, "(25) 412-3123"); // to test with value "254123123"
+            request.AddFieldAsId(XmlElementNames.Record.Id.FirstName, "TestFirstName");
+            request.AddFieldAsId(XmlElementNames.Record.Id.LastName, "TestLastName");
+            request.AddFieldAsId(XmlElementNames.Record.Id.Age, "25");
+            request.AddFieldAsId(XmlElementNames.Record.Id.DateOfBirth, "01-01-1980");
+            request.AddFieldAsId(XmlElementNames.Record.Id.WebsiteUrl, "https://www.linkedin.com/feed/");
+            request.AddFieldAsId(XmlElementNames.Record.Id.EmailAddress, DataGenerator.Email());
+            request.AddFieldAsId(XmlElementNames.Record.Id.Mobile, "(25) 412-3123"); // to test with value "254123123"
         }
         
         modifyRequest?.Invoke(request);
@@ -71,7 +71,7 @@ public class XmlRequestProvider
     {
         var request =  new DoQueryRequestDto
         {
-            UserData = CommonConstants.UserData,
+            UserData = Constants.UserData,
             Ticket = testRunContext.Ticket,
             AppToken = testRunConfig.AppToken,
             IncludeRecordId = 1

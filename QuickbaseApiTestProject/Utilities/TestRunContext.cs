@@ -30,7 +30,7 @@ public class TestRunContext
             UserData = "requested from automated test"
         };
         var response = quickbaseApi.AuthenticateAsync(authRequest).GetAwaiter().GetResult();
-        Assert.That(response.StatusCode == HttpStatusCode.OK, string.Format(CommonConstants.RequestFailedMessage, response.Body.ErrorText));
+        Assert.That(response.StatusCode == HttpStatusCode.OK, string.Format(Constants.Constants.AssertionMessage.RequestFailed, response.Body.ErrorText));
         return response.Body.Ticket;
     }
 }

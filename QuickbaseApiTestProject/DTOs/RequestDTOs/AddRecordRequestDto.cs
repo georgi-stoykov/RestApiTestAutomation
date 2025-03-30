@@ -80,7 +80,7 @@ public class AddRecordRequestDto
         
     }
 
-    public void AddNameField(string name, string value)
+    public void AddFieldAsName(string name, string value)
     {
         this.Fields[name] = new AddRecordRequestDto.FieldInfo
         {
@@ -89,7 +89,7 @@ public class AddRecordRequestDto
         };
     }
 
-    public void AddFidField(string fid, string value)
+    public void AddFieldAsId(string fid, string value)
     {
         Fields[fid] = new AddRecordRequestDto.FieldInfo
         {
