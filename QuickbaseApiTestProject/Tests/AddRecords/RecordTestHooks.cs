@@ -11,7 +11,7 @@ namespace QuickbaseApiTestProject.Tests.AddRecords;
 [TestFixture]
 public class RecordTestHooks
 {
-    protected readonly string tableId = TestServicesProvider.GetService<IOptions<TestSettingsConfig>>().Value.TestTableId;
+    protected readonly string tableId = TestServicesProvider.GetService<IOptions<TestRunConfig>>().Value.TestTableId;
     protected IQuickbaseApi quickbaseApi = TestServicesProvider.GetService<IQuickbaseApi>();
     protected XmlRequestProvider requestProvider = TestServicesProvider.GetService<XmlRequestProvider>();
     protected List<TableRecord> tableRecordsBefore;
@@ -26,7 +26,7 @@ public class RecordTestHooks
     {
         var request = requestProvider.DoQueryRequest();
         var tableRecordsResponse = await quickbaseApi.GetTableRecordsAsync(tableId, request);
-        Assert.That(tableRecordsResponse.StatusCode == HttpStatusCode.OK);
+        Assert.That(tableRecordsResponse.StatusCode == HttpStatusCode.OK, string.Format(CommonConstants.RequestFailedMessage, tableRecordsResponse.Body.ErrorText));
         tableRecordsBefore = tableRecordsResponse.Body.Records;
     }
 }

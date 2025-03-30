@@ -76,6 +76,8 @@ public class AddRecordRequestDto
     {
         public string Value { get; set; }
         public bool IsNameAttribute { get; set; }
+        
+        
     }
 
     public void AddNameField(string name, string value)

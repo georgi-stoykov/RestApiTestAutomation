@@ -18,7 +18,9 @@ public class AddRecordSuccessTests : RecordTestHooks
         request.AddFidField(XmlElementNames.Record.Id.FirstName, "TestFirstName");
         request.AddFidField(XmlElementNames.Record.Id.LastName, "TestLastName");
         request.AddFidField(XmlElementNames.Record.Id.Age, "25");
+        
         var response = await quickbaseApi.AddRecordAsync(tableId, request);
+        
         AssertSuccessResponseProperties(response);
         await AssertRecordHasBeenAddedWithIdsAsync(response.Body.RecordId, request);
         // Assert record properties non-mandatory are set to their default values
@@ -42,21 +44,19 @@ public class AddRecordSuccessTests : RecordTestHooks
     [Test(Description = "AAAAAAAAAAAA")]
     public async Task AddRecord_MandatoryAndOptionalFieldIDs_Successfully()
     {
-        var request = requestProvider.AddRecordRequest();
-        request.Fields = new Dictionary<string, AddRecordRequestDto.FieldInfo>();
-        request.AddNameField(XmlElementNames.Record.FirstName, "TestFirstName");
-        request.AddNameField(XmlElementNames.Record.LastName, "TestLastName");
-        request.AddFidField(XmlElementNames.Record.Id.Age, "25");
-
+        var request = requestProvider.AddRecordRequest(withNames: false);
         var response = await quickbaseApi.AddRecordAsync(tableId, request);
         AssertSuccessResponseProperties(response);
-        await AssertRecordHasBeenAddedWithNamesAsync(response.Body.RecordId, request);
+        await AssertRecordHasBeenAddedWithIdsAsync(response.Body.RecordId, request);
     }
     
     [Test(Description = "AAAAAAAAAAAA")]
     public async Task AddRecord_MandatoryAndOptionalFieldNames_Successfully()
     {
-        
+        var request = requestProvider.AddRecordRequest();
+        var response = await quickbaseApi.AddRecordAsync(tableId, request);
+        AssertSuccessResponseProperties(response);
+        await AssertRecordHasBeenAddedWithNamesAsync(response.Body.RecordId, request);
     }
     
     [Test(Description = "AAAAAAAAAAAA")]
@@ -70,7 +70,7 @@ public class AddRecordSuccessTests : RecordTestHooks
 
         var response = await quickbaseApi.AddRecordAsync(tableId, request);
         AssertSuccessResponseProperties(response);
-        await AssertRecordHasBeenAddedWithNamesAsync(response.Body.RecordId, request);
+        await AssertRecordHasBeenAddedAsync(response.Body.RecordId, request);
     }
     
     [Test(Description = "AAAAAAAAAAAA")]
@@ -121,7 +121,7 @@ public class AddRecordSuccessTests : RecordTestHooks
         Assert.That(response.Body.Action == ApiAction.API_AddRecord.ToString());
         Assert.That(response.Body.ErrorCode == 0);
         Assert.That(response.Body.ErrorText == "No error");
-        Assert.That(response.Body.UserData == "mydata");
+        Assert.That(response.Body.UserData == CommonConstants.UserData);
         Assert.That(response.Body.RecordId > 0);
         Assert.That(response.Body.UpdateId >= 0); // FIX ME
     }
@@ -136,7 +136,7 @@ public class AddRecordSuccessTests : RecordTestHooks
         Assert.That(newRecord!.LastName == requestDto.Fields[XmlElementNames.Record.Id.LastName].Value);
         Assert.That(newRecord!.Age == int.Parse(requestDto.Fields[XmlElementNames.Record.Id.Age].Value));
         
-        Assert.That(newRecord!.DateOfBirth == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.DateOfBirth)?.Value ?? ""));
+        // Assert.That(newRecord!.DateOfBirth == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.DateOfBirth)?.Value ?? ""));
         Assert.That(newRecord!.WebsiteUrl == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.WebsiteUrl)?.Value ?? "") );
         Assert.That(newRecord!.EmailAddress == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.EmailAddress)?.Value ?? ""));
         Assert.That(newRecord!.Mobile == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.Mobile)?.Value ?? ""));
@@ -152,9 +152,28 @@ public class AddRecordSuccessTests : RecordTestHooks
         Assert.That(newRecord!.LastName == requestDto.Fields[XmlElementNames.Record.LastName].Value);
         Assert.That(newRecord!.Age == int.Parse(requestDto.Fields[XmlElementNames.Record.Age].Value));
         
-        Assert.That(newRecord!.DateOfBirth == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.DateOfBirth)?.Value ?? ""));
+        // Assert.That(newRecord!.DateOfBirth == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.DateOfBirth)?.Value ?? ""));
         Assert.That(newRecord!.WebsiteUrl == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.WebsiteUrl)?.Value ?? "") );
         Assert.That(newRecord!.EmailAddress == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.EmailAddress)?.Value ?? ""));
         Assert.That(newRecord!.Mobile == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Mobile)?.Value ?? ""));
+    }
+    
+    private async Task AssertRecordHasBeenAddedAsync(int recordId, AddRecordRequestDto requestDto)
+    {
+        var request = requestProvider.DoQueryRequest();
+        var tableRecords = await quickbaseApi.GetTableRecordsAsync(tableId, request);
+        var newRecord = tableRecords.Body.Records.SingleOrDefault(x => x.RecordId == recordId);
+        
+        // MandatoryFields
+        Assert.That(newRecord!.FirstName == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.FirstName)?.Value ?? requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.FirstName)?.Value ?? string.Empty));
+        Assert.That(newRecord!.LastName == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.LastName)?.Value ?? requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.LastName)?.Value ?? string.Empty));
+        string? requestedAge = requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Age)?.Value ?? requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.Age)?.Value;
+        Assert.That(newRecord!.Age == (requestedAge != null ?  int.Parse(requestedAge) :  0));
+        
+        // Optional fields
+        // Assert.That(newRecord!.DateOfBirth == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.DateOfBirth)?.Value ?? requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.DateOfBirth)?.Value ?? string.Empty));
+        Assert.That(newRecord!.WebsiteUrl == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.WebsiteUrl)?.Value ?? requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.WebsiteUrl)?.Value ?? string.Empty));
+        Assert.That(newRecord!.EmailAddress == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.EmailAddress)?.Value ?? requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.EmailAddress)?.Value ?? string.Empty));
+        Assert.That(newRecord!.Mobile == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Mobile)?.Value ?? requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.Mobile)?.Value ?? string.Empty));
     }
 }

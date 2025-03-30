@@ -24,11 +24,11 @@ public class XmlQuickbaseApi : IQuickbaseApi
         this.httpClient.BaseAddress = new Uri(config.BaseApiUrl);
     }
 
-    public async Task<BaseResponse<AuthenticationResponseDto>> AuthenticateAsync(AuthenticateRequestDto body)
+    public async Task<BaseResponse<AuthenticationResponseDto>> AuthenticateAsync(AuthenticateRequestDto requestData)
     {
-        string endpoint = string.Format(config.Endpoints.Authenticate, body);
+        string endpoint = string.Format(config.Endpoints.Authenticate, requestData);
         
-        string xmlRequest = XmlSerializeHelper.SerializeToXml(body);
+        string xmlRequest = XmlSerializeHelper.SerializeToXml(requestData);
         
         var content = new StringContent(xmlRequest, encodingType, mediaType);
         content.Headers.Add("QUICKBASE-ACTION", nameof(ApiAction.API_Authenticate));

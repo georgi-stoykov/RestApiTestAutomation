@@ -8,7 +8,7 @@ public record ApiMode
     public const string JSON = "JSON";
 }
 
-public class TestSettingsConfig
+public class TestRunConfig
 {
     [Required]
     public string ApiMode { get; set; }
@@ -17,10 +17,7 @@ public class TestSettingsConfig
     
     public string Password { get; set; }
     
-    
     public string TestTableId { get; set; }
-    
-    public string Ticket { get; set; }
     
     public string AppToken { get; set; }
 }
