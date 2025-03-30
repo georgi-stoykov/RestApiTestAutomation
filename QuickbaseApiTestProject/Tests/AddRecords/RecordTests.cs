@@ -8,8 +8,9 @@ using QuickbaseApiTestProject.Utilities;
 
 namespace QuickbaseApiTestProject.Tests.AddRecords;
 
+[Category("AddRecordTests")]
 [TestFixture]
-public class RecordTestHooks
+public class RecordTests
 {
     protected readonly string tableId = TestServicesProvider.GetService<IOptions<TestRunConfig>>().Value.TestTableId;
     protected IQuickbaseApi quickbaseApi = TestServicesProvider.GetService<IQuickbaseApi>();
@@ -30,7 +31,7 @@ public class RecordTestHooks
         Assert.That(tableRecordsResponse.StatusCode == HttpStatusCode.OK, string.Format(Constants.AssertionMessage.RequestFailed, tableRecordsResponse.Body.ErrorText));
     }
     
-    protected async Task<TableRecord>? GetCreatedRecordAsync(Func<TableRecord, bool> recordFilter)
+    protected async Task<TableRecord>? GetTableRecordsAsync(Func<TableRecord, bool> recordFilter)
     {
         var request = requestProvider.DoQueryRequest();
         var tableRecords = await quickbaseApi.GetTableRecordsAsync(tableId, request);

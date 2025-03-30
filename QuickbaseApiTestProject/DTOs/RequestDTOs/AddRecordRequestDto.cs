@@ -12,6 +12,9 @@ public class AddRecordRequestDto
     [XmlElement(XmlElementNames.AppToken)]
     public string AppToken { get; set; }
 
+    [XmlElement(XmlElementNames.Record.IgnoreError)]
+    public int? IgnoreError { get; set; }
+    
     [XmlIgnore]
     public List<KeyValuePair<string, FieldInfo>> Fields { get; set; } = new List<KeyValuePair<string, FieldInfo>>();
 
@@ -107,7 +110,6 @@ public class AddRecordRequestDto
         return Fields.Where(f => f.Key == key).Select(f => f.Value);
     }
 
-// Extension method to replace GetValueOrDefault used with Dictionary
     public FieldInfo GetFieldOrDefault(string key)
     {
         var pair = Fields.LastOrDefault(f => f.Key == key);

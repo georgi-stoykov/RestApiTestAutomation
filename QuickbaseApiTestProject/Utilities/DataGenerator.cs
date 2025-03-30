@@ -2,9 +2,15 @@
 
 public static class DataGenerator
 {
-    public static string Email()
+    
+    public static string AlphaNumberString()
     {
-        var name =  Guid.NewGuid().ToString().Replace("-", string.Empty);
+        return Guid.NewGuid().ToString().Replace("-", string.Empty);
+    }
+    
+    public static string NewEmail()
+    {
+        var name = AlphaNumberString();
         return $"{name}@mail.com";
     }
 }

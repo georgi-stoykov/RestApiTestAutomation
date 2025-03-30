@@ -38,24 +38,31 @@ public abstract record XmlElementNames
         public const string RecordId = "rid";
         public const string IncludeRecordId = "includeRids";
         public const string RecordAsString = "record";
+        public const string IgnoreError = "ignoreError";
         
         public const string FirstName = "firstname";
         public const string LastName = "lastname";
         public const string Age = "age";
+        public const string WorkEmail = "work_email";
         public const string DateOfBirth = "date_of_birth";
         public const string WebsiteUrl = "website_url";
-        public const string EmailAddress = "email_address";
+        public const string PersonalEmail = "personal_email";
         public const string Mobile = "mobile";
+        public const string VCardField = "vCardField";
 
         public abstract record Id
         {
             public const string FirstName = "6";
             public const string LastName = "7";
             public const string Age = "8";
+            public const string WorkEmail = "14";
             public const string DateOfBirth = "9";
             public const string WebsiteUrl = "10";
             public const string EmailAddress = "11";
             public const string Mobile = "12";
+            
+            public const string BuildIn_RecordID = "3";
+            public const string NonWritable_vCardField = "15";
         }
         public abstract record FieldAttribute
         {

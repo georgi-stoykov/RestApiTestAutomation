@@ -15,7 +15,7 @@ public record DoQueryResponseDto : BaseResponseDto
     [XmlElement(XmlElementNames.Database.ChildDatabaseIds)]
     public string ChildDatabaseIds { get; set; }
 
-    [XmlElement("record")] 
+    [XmlElement(XmlElementNames.Record.RecordAsString)] 
     public List<TableRecord> Records { get; set; }
 }
 
@@ -38,13 +38,17 @@ public record TableRecord
 
     [XmlElement(XmlElementNames.Record.Age)] public int Age { get; set; }
 
+    [XmlElement(XmlElementNames.Record.WorkEmail)] public string WorkEmail { get; set; }
+    
     [XmlElement(XmlElementNames.Record.DateOfBirth)] public string DateOfBirth { get; set; }
 
     [XmlElement(XmlElementNames.Record.WebsiteUrl)] public string WebsiteUrl { get; set; }
 
-    [XmlElement(XmlElementNames.Record.EmailAddress)] public string EmailAddress { get; set; }
+    [XmlElement(XmlElementNames.Record.PersonalEmail)] public string PersonalEmail { get; set; }
 
     [XmlElement(XmlElementNames.Record.Mobile)] public string Mobile { get; set; }
+    
+    [XmlElement(XmlElementNames.Record.VCardField)] public string? VCardField { get; set; }
 
     // Using the string property approach for BigInteger serialization
     [XmlIgnore] public BigInteger UpdateId { get; set; }

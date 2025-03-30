@@ -32,35 +32,56 @@ public class XmlRequestProvider
     }
     
     
-    public AddRecordRequestDto AddRecordRequest(Action<AddRecordRequestDto>? modifyRequest = null, bool withNames = true)
+    public AddRecordRequestDto AddRecordRequest(Action<AddRecordRequestDto>? modifyRequest = null, bool useNameFields = true, bool includeOptionalFields = false)
     {
+        // Extract repeating string values into private variables
+        const string TestFirstNameValue = "TestFirstName";
+        const string TestLastNameValue = "TestLastName";
+        const string DefaultAgeValue = "25";
+        const string DefaultDateOfBirthValue = "01-01-1980";
+        const string DefaultWebsiteValue = "https://www.linkedin.com/feed/";
+        const string DefaultMobileValue = "(25) 412-3123"; // to test with value "254123123"
+        string workEmail = DataGenerator.NewEmail();
+        string personalEmail = DataGenerator.NewEmail();
+        
         var request =  new AddRecordRequestDto
         {
             UserData = Constants.UserData,
             Ticket = testRunContext.Ticket,
             AppToken = testRunConfig.AppToken,
-            Fields = new List<KeyValuePair<string, AddRecordRequestDto.FieldInfo>>()
+            Fields = new List<KeyValuePair<string, AddRecordRequestDto.FieldInfo>>(),
+            IgnoreError = null
         };
 
-        if (withNames)
+        if (useNameFields)
         {
-            request.AddFieldAsName(XmlElementNames.Record.FirstName, "TestFirstName");
-            request.AddFieldAsName(XmlElementNames.Record.LastName, "TestLastName");
-            request.AddFieldAsName(XmlElementNames.Record.Age, "25");
-            request.AddFieldAsName(XmlElementNames.Record.DateOfBirth, "01-01-1980");
-            request.AddFieldAsName(XmlElementNames.Record.WebsiteUrl, "https://www.linkedin.com/feed/");
-            request.AddFieldAsName(XmlElementNames.Record.EmailAddress, DataGenerator.Email());
-            request.AddFieldAsName(XmlElementNames.Record.Mobile, "(25) 412-3123"); // to test with value "254123123"
+            request.AddFieldAsName(XmlElementNames.Record.FirstName, TestFirstNameValue);
+            request.AddFieldAsName(XmlElementNames.Record.LastName, TestLastNameValue);
+            request.AddFieldAsName(XmlElementNames.Record.Age, DefaultAgeValue);
+            request.AddFieldAsName(XmlElementNames.Record.WorkEmail, workEmail);
+
+            if (includeOptionalFields)
+            {
+                request.AddFieldAsName(XmlElementNames.Record.DateOfBirth, DefaultDateOfBirthValue);
+                request.AddFieldAsName(XmlElementNames.Record.WebsiteUrl, DefaultWebsiteValue);
+                request.AddFieldAsName(XmlElementNames.Record.PersonalEmail, personalEmail);
+                request.AddFieldAsName(XmlElementNames.Record.Mobile, DefaultMobileValue);
+            }
         }
         else
         {
-            request.AddFieldAsId(XmlElementNames.Record.Id.FirstName, "TestFirstName");
-            request.AddFieldAsId(XmlElementNames.Record.Id.LastName, "TestLastName");
-            request.AddFieldAsId(XmlElementNames.Record.Id.Age, "25");
-            request.AddFieldAsId(XmlElementNames.Record.Id.DateOfBirth, "01-01-1980");
-            request.AddFieldAsId(XmlElementNames.Record.Id.WebsiteUrl, "https://www.linkedin.com/feed/");
-            request.AddFieldAsId(XmlElementNames.Record.Id.EmailAddress, DataGenerator.Email());
-            request.AddFieldAsId(XmlElementNames.Record.Id.Mobile, "(25) 412-3123"); // to test with value "254123123"
+            request.AddFieldAsId(XmlElementNames.Record.Id.FirstName, TestFirstNameValue);
+            request.AddFieldAsId(XmlElementNames.Record.Id.LastName, TestLastNameValue);
+            request.AddFieldAsId(XmlElementNames.Record.Id.Age, DefaultAgeValue);
+            request.AddFieldAsId(XmlElementNames.Record.Id.WorkEmail, workEmail);
+            
+            if (includeOptionalFields)
+            {
+                request.AddFieldAsId(XmlElementNames.Record.Id.DateOfBirth, DefaultDateOfBirthValue);
+                request.AddFieldAsId(XmlElementNames.Record.Id.WebsiteUrl, DefaultWebsiteValue);
+                request.AddFieldAsId(XmlElementNames.Record.Id.EmailAddress, personalEmail);
+                request.AddFieldAsId(XmlElementNames.Record.Id.Mobile, DefaultMobileValue);
+            }
         }
         
         modifyRequest?.Invoke(request);
