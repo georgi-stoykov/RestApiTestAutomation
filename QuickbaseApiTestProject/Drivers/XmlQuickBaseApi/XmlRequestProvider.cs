@@ -39,7 +39,7 @@ public class XmlRequestProvider
             UserData = Constants.UserData,
             Ticket = testRunContext.Ticket,
             AppToken = testRunConfig.AppToken,
-            Fields = new Dictionary<string, AddRecordRequestDto.FieldInfo>()
+            Fields = new List<KeyValuePair<string, AddRecordRequestDto.FieldInfo>>()
         };
 
         if (withNames)

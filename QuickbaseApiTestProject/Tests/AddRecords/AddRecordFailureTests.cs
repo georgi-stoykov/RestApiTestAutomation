@@ -13,7 +13,7 @@ public class AddRecordFailureTests : RecordTestHooks
     public async Task AddRecord_MissingMandatoryFieldIDs_ReturnsError()
     {
         var request = requestProvider.AddRecordRequest();
-        request.Fields = new Dictionary<string, AddRecordRequestDto.FieldInfo>();
+        request.Fields = new List<KeyValuePair<string, AddRecordRequestDto.FieldInfo>>();
         request.AddFieldAsId(XmlElementNames.Record.Id.FirstName, "TestFirstName");
         request.AddFieldAsId(XmlElementNames.Record.Id.Age, "25");
         
@@ -28,7 +28,7 @@ public class AddRecordFailureTests : RecordTestHooks
     public async Task AddRecord_MissingMandatoryFieldNames_ReturnsError()
     {
         var request = requestProvider.AddRecordRequest();
-        request.Fields = new Dictionary<string, AddRecordRequestDto.FieldInfo>();
+        request.Fields = new List<KeyValuePair<string, AddRecordRequestDto.FieldInfo>>();
         request.AddFieldAsName(XmlElementNames.Record.FirstName, "TestFirstName");
         request.AddFieldAsName(XmlElementNames.Record.Age, "25");
         

@@ -1,6 +1,6 @@
 ﻿namespace QuickbaseApiTestProject.Utilities.Constants;
 
-public record XmlElementNames
+public abstract record XmlElementNames
 {
     // Root element
     public const string QdbApi = "qdbapi";
@@ -15,7 +15,7 @@ public record XmlElementNames
     public const string ErrorText = "errtext";
 
 
-    public record Authentication
+    public abstract record Authentication
     {
         public const string Username = "username";
         public const string Password = "password";
@@ -23,7 +23,7 @@ public record XmlElementNames
         public const string UserId = "userid";
     }
     
-    public record Database
+    public abstract record Database
     {
         public const string DatabaseInfo = "dbinfo";
         public const string Variables = "variables";
@@ -32,7 +32,7 @@ public record XmlElementNames
         public const string Description = "desc";
     }
 
-    public record Record
+    public abstract record Record
     {
         public const string UpdateId = "update_id";
         public const string RecordId = "rid";
@@ -47,7 +47,7 @@ public record XmlElementNames
         public const string EmailAddress = "email_address";
         public const string Mobile = "mobile";
 
-        public record Id
+        public abstract record Id
         {
             public const string FirstName = "6";
             public const string LastName = "7";
@@ -57,7 +57,7 @@ public record XmlElementNames
             public const string EmailAddress = "11";
             public const string Mobile = "12";
         }
-        public record FieldAttribute
+        public abstract record FieldAttribute
         {
             public const string Name = "name";
             public const string Fid = "fid";
