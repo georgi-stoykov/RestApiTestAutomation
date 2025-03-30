@@ -160,10 +160,10 @@ public class AddRecordSuccessTests : RecordTestHooks
         Assert.That(newRecord!.LastName == expectedRecord.Fields[XmlElementNames.Record.Id.LastName].Value);
         Assert.That(newRecord!.Age == int.Parse(expectedRecord.Fields[XmlElementNames.Record.Id.Age].Value));
         
-        // Assert.That(newRecord!.DateOfBirth == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.DateOfBirth)?.Value ?? Constants.DefaultTableFieldValue.DateOfBirth));
-        Assert.That(newRecord!.WebsiteUrl == (expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.WebsiteUrl)?.Value ?? Constants.DefaultFieldValue.WebsiteUrl) );
-        Assert.That(newRecord!.EmailAddress == (expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.EmailAddress)?.Value ?? Constants.DefaultFieldValue.Email));
-        Assert.That(newRecord!.Mobile == (expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.Mobile)?.Value ?? Constants.DefaultFieldValue.Mobile));
+        // Assert.That(newRecord!.DateOfBirth == (requestDto.Fields.GetValueOrDefault(XmlElementNames.Record.Id.DateOfBirth)?.Value ?? Constants.DefaultTableFieldValue.DateOfBirth));
+        Assert.That(newRecord!.WebsiteUrl == (expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.Id.WebsiteUrl)?.Value ?? Constants.DefaultFieldValue.WebsiteUrl) );
+        Assert.That(newRecord!.EmailAddress == (expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.Id.EmailAddress)?.Value ?? Constants.DefaultFieldValue.Email));
+        Assert.That(newRecord!.Mobile == (expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.Id.Mobile)?.Value ?? Constants.DefaultFieldValue.Mobile));
     }
     
     private async Task AssertRecordHasBeenAddedWithNamesAsync(int recordId, AddRecordRequestDto expectedRecord)
@@ -174,10 +174,10 @@ public class AddRecordSuccessTests : RecordTestHooks
         Assert.That(newRecord!.LastName == expectedRecord.Fields[XmlElementNames.Record.LastName].Value);
         Assert.That(newRecord!.Age == int.Parse(expectedRecord.Fields[XmlElementNames.Record.Age].Value));
         
-        // Assert.That(newRecord!.DateOfBirth == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.DateOfBirth)?.Value ?? Constants.DefaultTableFieldValue.DateOfBirth));
-        Assert.That(newRecord!.WebsiteUrl == (expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.WebsiteUrl)?.Value ?? Constants.DefaultFieldValue.WebsiteUrl) );
-        Assert.That(newRecord!.EmailAddress == (expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.EmailAddress)?.Value ?? Constants.DefaultFieldValue.Email));
-        Assert.That(newRecord!.Mobile == (expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Mobile)?.Value ?? Constants.DefaultFieldValue.Mobile));
+        // Assert.That(newRecord!.DateOfBirth == (requestDto.Fields.GetValueOrDefault(XmlElementNames.Record.DateOfBirth)?.Value ?? Constants.DefaultTableFieldValue.DateOfBirth));
+        Assert.That(newRecord!.WebsiteUrl == (expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.WebsiteUrl)?.Value ?? Constants.DefaultFieldValue.WebsiteUrl) );
+        Assert.That(newRecord!.EmailAddress == (expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.EmailAddress)?.Value ?? Constants.DefaultFieldValue.Email));
+        Assert.That(newRecord!.Mobile == (expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.Mobile)?.Value ?? Constants.DefaultFieldValue.Mobile));
     }
     
     private async Task AssertRecordHasBeenAddedAsync(int recordId, AddRecordRequestDto expectedRecord)
@@ -186,16 +186,16 @@ public class AddRecordSuccessTests : RecordTestHooks
         Assert.That(newRecord != null, Constants.AssertionMessage.MissingExpectedRecord);
 
         // MandatoryFields
-        Assert.That(newRecord!.FirstName == (expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.FirstName)?.Value ?? expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.FirstName)?.Value ?? string.Empty));
-        Assert.That(newRecord!.LastName == (expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.LastName)?.Value ?? expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.LastName)?.Value ?? string.Empty));
-        string? requestedAge = expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Age)?.Value ?? expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.Age)?.Value;
+        Assert.That(newRecord!.FirstName == (expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.FirstName)?.Value ?? expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.Id.FirstName)?.Value ?? string.Empty));
+        Assert.That(newRecord!.LastName == (expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.LastName)?.Value ?? expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.Id.LastName)?.Value ?? string.Empty));
+        string? requestedAge = expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.Age)?.Value ?? expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.Id.Age)?.Value;
         Assert.That(newRecord!.Age == (requestedAge != null ?  int.Parse(requestedAge) :  0));
         
         // Optional fields
-        // Assert.That(newRecord!.DateOfBirth == (requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.DateOfBirth)?.Value ?? requestDto.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.DateOfBirth)?.Value ?? Constants.DefaultTableFieldValue.DateOfBirth));
-        Assert.That(newRecord!.WebsiteUrl == (expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.WebsiteUrl)?.Value ?? expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.WebsiteUrl)?.Value ?? Constants.DefaultFieldValue.WebsiteUrl));
-        Assert.That(newRecord!.EmailAddress == (expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.EmailAddress)?.Value ?? expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.EmailAddress)?.Value ?? Constants.DefaultFieldValue.Email));
-        Assert.That(newRecord!.Mobile == (expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Mobile)?.Value ?? expectedRecord.Fields.GetValueOrDefault<string, AddRecordRequestDto.FieldInfo>(XmlElementNames.Record.Id.Mobile)?.Value ?? Constants.DefaultFieldValue.Mobile));
+        // Assert.That(newRecord!.DateOfBirth == (requestDto.Fields.GetValueOrDefault(XmlElementNames.Record.DateOfBirth)?.Value ?? requestDto.Fields.GetValueOrDefault(XmlElementNames.Record.Id.DateOfBirth)?.Value ?? Constants.DefaultTableFieldValue.DateOfBirth));
+        Assert.That(newRecord!.WebsiteUrl == (expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.WebsiteUrl)?.Value ?? expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.Id.WebsiteUrl)?.Value ?? Constants.DefaultFieldValue.WebsiteUrl));
+        Assert.That(newRecord!.EmailAddress == (expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.EmailAddress)?.Value ?? expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.Id.EmailAddress)?.Value ?? Constants.DefaultFieldValue.Email));
+        Assert.That(newRecord!.Mobile == (expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.Mobile)?.Value ?? expectedRecord.Fields.GetValueOrDefault(XmlElementNames.Record.Id.Mobile)?.Value ?? Constants.DefaultFieldValue.Mobile));
     }
     #endregion
 }
